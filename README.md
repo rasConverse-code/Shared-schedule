@@ -144,12 +144,23 @@ Course {
 
 | 文件 | 作用 |
 |------|------|
-| [LICENSE](./LICENSE) | MIT 许可证（请把 Copyright 行改成你的姓名） |
+| [LICENSE](./LICENSE) | MIT 许可证（Copyright © 2026 rasConverse-code） |
 | [NOTICE.md](./NOTICE.md) | 版权归属、署名要求、AppID 注意事项 |
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | 欢迎共建：联系方式与协作流程 |
 
-- **著作权归原作者**；MIT 仅授予他人使用/修改/分发的许可，**不转让版权**
+- **著作权归原作者 rasConverse-code**；MIT 仅授予使用/修改/分发许可，**不转让版权**
 - 二次分发须保留 `LICENSE` 与版权声明
-- 禁止在未获书面许可时闭源商用售卖本软件本体
+
+## 欢迎共建（须先联系）
+
+欢迎协助完善小程序的**未来版本更新与维护**。  
+**请先邮件联系，经同意并邀请为 GitHub Collaborator 后再开始协作。**
+
+- 联系邮箱：**rashuang05@gmail.com**
+- 邮件请注明：GitHub 用户名、擅长方向、希望改进的内容
+- 详细约定见 [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+未经联系请勿以本项目名义对外发布、上架或商业使用。
 
 ## 上传 GitHub 步骤
 

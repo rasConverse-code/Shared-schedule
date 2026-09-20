@@ -12,6 +12,12 @@
 
   > 基于「课表搭子」(ketabazi)，Copyright © 2026 rasConverse-code
 
+## 协作与共建
+
+- 欢迎协助未来版本更新与维护，但须**先联系所有者**（邮箱见 README / CONTRIBUTING.md）
+- 经同意并受邀为 GitHub Collaborator 后，再推送代码与参与维护
+- 协作贡献不改变著作权归属，贡献代码默认按 MIT 并入本项目
+
 ## 微信小程序相关
 
 - 小程序 AppID、云开发环境 ID 等**不要**提交到公开仓库
