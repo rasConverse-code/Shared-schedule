@@ -1,0 +1,238 @@
+<view class="page safe-bottom">
+  <!-- 顶栏 -->
+  <view class="topbar">
+    <view class="topbar-row">
+      <view class="group-switch" bindtap="openGroupPicker">
+        <view class="group-name">{{group.name || '选择群组'}}</view>
+        <view class="group-caret {{groupPickerVisible ? 'up' : ''}}">▾</view>
+      </view>
+      <view class="week-nav">
+        <view class="week-nav-row">
+          <view class="week-step" bindtap="prevWeek">‹</view>
+          <view class="week-center" bindtap="goThisWeek">
+            <text class="week-num">第{{weekNum}}周</text>
+            <text class="week-range">{{weekLabel}}</text>
+          </view>
+          <view class="week-step" bindtap="nextWeek">›</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="group-panel {{groupPickerVisible ? 'show' : ''}}" wx:if="{{groupPickerVisible}}">
+      <view class="group-panel-mask" bindtap="closeGroupPicker"></view>
+      <view class="group-panel-body">
+        <view class="group-panel-head">
+          <text class="group-panel-title">切换群组</text>
+          <text class="group-panel-close" bindtap="closeGroupPicker">关闭</text>
+        </view>
+        <view wx:if="{{!groupOptions.length}}" class="group-panel-empty">还没有群组</view>
+        <view
+          class="group-option {{item.isCurrent ? 'current' : ''}}"
+          wx:for="{{groupOptions}}"
+          wx:key="groupId"
+          data-id="{{item.groupId}}"
+          bindtap="onSelectGroup"
+        >
+          <view class="group-option-main">
+            <view class="group-option-name">
+              {{item.name}}
+              <text wx:if="{{item.isCurrent}}" class="group-option-tag">当前</text>
+            </view>
+            <view class="group-option-meta">{{item.memberCount}} 人 · {{item.inviteCode}}</view>
+          </view>
+          <view class="group-option-check" wx:if="{{item.isCurrent}}">✓</view>
+        </view>
+        <view class="group-panel-foot" bindtap="goFriends">管理群组 / 创建加入 →</view>
+      </view>
+    </view>
+
+    <scroll-view class="member-bar" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="member-list">
+        <view
+          class="member-item {{item.isMe ? 'is-me' : ''}}"
+          wx:for="{{members}}"
+          wx:key="userId"
+        >
+          <view class="member-avatar" style="background:{{item.color}}">
+            {{item.initial}}
+          </view>
+          <text class="member-name">{{item.nickName}}</text>
+        </view>
+        <view class="member-item member-add" bindtap="goFriends">
+          <view class="member-avatar add">+</view>
+          <text class="member-name">邀请</text>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="topbar-actions">
+      <view class="action-chip" bindtap="onQueryFree">查空闲</view>
+      <view class="action-chip" bindtap="goSettings">作息</view>
+      <view class="action-chip primary" bindtap="onAddTap">+ 记一笔</view>
+    </view>
+  </view>
+
+  <view wx:if="{{!group}}" class="empty-wrap">
+    <view class="empty-title">还没有群组</view>
+    <view class="empty-desc">创建或加入一个群组，和朋友叠层看课表</view>
+    <view class="btn-primary empty-btn" bindtap="goFriends">去创建 / 加入</view>
+  </view>
+
+  <!-- iOS 日历式课表 -->
+  <view wx:else class="cal-wrap">
+    <view class="cal-header">
+      <view class="cal-corner">
+        <text class="corner-time" wx:if="{{range}}">{{range.startLabel}}</text>
+      </view>
+      <view
+        class="cal-day-head {{item.isToday ? 'today' : ''}}"
+        wx:for="{{dates}}"
+        wx:key="date"
+      >
+        <text class="day-label">{{item.dayLabel}}</text>
+        <text class="day-num">{{item.dayNum}}</text>
+      </view>
+    </view>
+
+    <scroll-view class="cal-scroll" scroll-y enhanced show-scrollbar="{{true}}">
+      <view class="cal-body" style="height:{{bodyHeightRpx}}rpx">
+        <!-- 左侧：仅时间轴，无名称栏 -->
+        <view class="cal-times">
+          <view
+            class="cal-hour-label"
+            wx:for="{{hours}}"
+            wx:key="min"
+            style="top:{{item.topPct}}%;transform:translateY(-50%)"
+          >
+            {{item.label}}
+          </view>
+        </view>
+
+        <!-- 7 天 -->
+        <view class="cal-days">
+          <view
+            class="cal-day {{item.isToday ? 'today' : ''}}"
+            wx:for="{{dates}}"
+            wx:key="date"
+            wx:for-item="dayItem"
+            wx:for-index="dIndex"
+            data-day="{{dIndex + 1}}"
+            bindtap="onDayColTap"
+          >
+            <!-- 小时刻度 -->
+            <view
+              class="cal-hour-line"
+              wx:for="{{hours}}"
+              wx:key="min"
+              style="top:{{item.topPct}}%"
+            ></view>
+            <!-- 节次淡色带 -->
+            <view
+              class="cal-slot-band"
+              wx:for="{{slotMarks}}"
+              wx:key="id"
+              style="top:{{item.topPct}}%;height:{{item.heightPct}}%"
+            ></view>
+            <!-- 事件色块：上下边界 = 上课/下课时间 -->
+            <view
+              class="cal-event {{item.multiCol ? 'narrow' : ''}}"
+              wx:for="{{blocks[dIndex]}}"
+              wx:key="courseId"
+              style="top:{{item.topPct}}%;height:{{item.heightPct}}%;left:{{item.leftPct}}%;width:calc({{item.widthPct}}% - 4rpx);background:{{item.bg}};border-color:{{item.border}}"
+              data-day="{{dIndex + 1}}"
+              data-course="{{item}}"
+              catchtap="onEventTap"
+            >
+              <view class="ev-bar" style="background:{{item.border}}"></view>
+              <view class="ev-body">
+                <text class="ev-title">{{item.title}}</text>
+                <text class="ev-time">{{item.startLabel}}-{{item.endLabel}}</text>
+                <text class="ev-user" wx:if="{{item.multiCol || item.heightPct > 6}}">{{item.nickName}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 详情弹层 -->
+  <view class="sheet-mask" wx:if="{{sheetVisible}}" bindtap="closeSheet"></view>
+  <view class="sheet {{sheetVisible ? 'show' : ''}}">
+    <view class="sheet-handle"></view>
+    <view class="sheet-head">
+      <view>
+        <view class="sheet-title">{{sheetTitle}}</view>
+        <view class="sheet-sub" wx:if="{{!queryMode}}">{{sheetTime}}</view>
+      </view>
+      <view class="sheet-close" bindtap="closeSheet">关闭</view>
+    </view>
+
+    <block wx:if="{{!queryMode}}">
+      <view class="sheet-section" wx:if="{{sheetItems.length}}">
+        <view class="section-label">被占用 · {{sheetItems.length}} 条</view>
+        <view
+          class="occ-card"
+          wx:for="{{sheetItems}}"
+          wx:key="courseId"
+          style="border-left-color:{{item.color}}"
+        >
+          <view class="occ-left">
+            <view class="occ-avatar" style="background:{{item.color}}">{{item.initial}}</view>
+            <view class="occ-meta">
+              <view class="occ-user">
+                {{item.nickName}}
+                <text wx:if="{{item.isMe}}" class="me-tag">我</text>
+                <text class="type-tag {{item.type}}">{{item.typeLabel}}</text>
+              </view>
+              <view class="occ-title">{{item.title}}</view>
+              <view class="occ-detail">
+                <text wx:if="{{item.rangeLabel}}">{{item.rangeLabel}}</text>
+                <text wx:if="{{item.location}}"> · {{item.location}}</text>
+                <text wx:if="{{item.teacher}}"> · {{item.teacher}}</text>
+              </view>
+              <view class="occ-note" wx:if="{{item.note}}">{{item.note}}</view>
+            </view>
+          </view>
+          <view wx:if="{{item.isMe}}" class="occ-edit" data-id="{{item.courseId}}" catchtap="onEditCourse">编辑</view>
+        </view>
+      </view>
+      <view wx:else class="sheet-empty">这天大家都空着</view>
+
+      <view class="sheet-section" wx:if="{{sheetFree.length}}">
+        <view class="section-label success">全天有空 · {{sheetFree.length}} 人</view>
+        <view class="free-row">
+          <view class="free-item" wx:for="{{sheetFree}}" wx:key="nickName">
+            <view class="free-avatar" style="background:{{item.color}}22;color:{{item.color}};border-color:{{item.color}}55">
+              {{item.initial}}
+            </view>
+            <text class="free-name">{{item.nickName}}<text wx:if="{{item.isMe}}">（我）</text></text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <block wx:else>
+      <view class="query-list">
+        <view class="query-row" wx:for="{{queryResult}}" wx:key="label">
+          <view class="query-slot">
+            <text class="query-label">{{item.label}}</text>
+            <text class="query-time">{{item.time}}</text>
+          </view>
+          <view class="query-free">
+            <block wx:if="{{item.free.length}}">
+              <view class="query-chip" wx:for="{{item.free}}" wx:for-item="p" wx:key="nickName" style="border-color:{{p.color}};color:{{p.color}};background:{{p.color}}18">
+                {{p.nickName}}
+              </view>
+            </block>
+            <text wx:else class="query-none">全员占用</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view class="sheet-footer">
+      <view class="btn-ghost" bindtap="onAddTap">+ 添加课程 / 事件</view>
+    </view>
+  </view>
+</view>

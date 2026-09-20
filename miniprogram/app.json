@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/schedule/schedule",
+    "pages/friends/friends",
+    "pages/profile/profile",
+    "pages/course-edit/course-edit",
+    "pages/group-detail/group-detail",
+    "pages/settings/settings"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#F4F6FA",
+    "navigationBarTitleText": "课表搭子",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F4F6FA",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#8B93A7",
+    "selectedColor": "#4F6EF7",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/schedule/schedule",
+        "text": "课表"
+      },
+      {
+        "pagePath": "pages/friends/friends",
+        "text": "群组"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

@@ -1,0 +1,151 @@
+<view class="page safe-bottom">
+  <view class="tip">
+    先设置课表节数（上午 / 下午 / 晚上各几节），再为每一节设置开始时间与时长。
+    课表左侧仅显示时间轴，不显示名称栏。
+  </view>
+
+  <!-- 1. 课表节数 -->
+  <view class="card">
+    <view class="card-title">① 课表节数</view>
+
+    <view class="session-row">
+      <text class="session-name">上午</text>
+      <view class="stepper">
+        <view class="step-btn" data-field="morningCount" data-delta="-1" bindtap="onCountStep">−</view>
+        <text class="step-val">{{morningCount}}</text>
+        <view class="step-btn" data-field="morningCount" data-delta="1" bindtap="onCountStep">+</view>
+      </view>
+      <picker mode="time" value="{{morningStart}}" data-field="morningStart" bindchange="onSessionStartChange">
+        <view class="session-start">{{morningStart}} 开始</view>
+      </picker>
+    </view>
+
+    <view class="session-row">
+      <text class="session-name">下午</text>
+      <view class="stepper">
+        <view class="step-btn" data-field="afternoonCount" data-delta="-1" bindtap="onCountStep">−</view>
+        <text class="step-val">{{afternoonCount}}</text>
+        <view class="step-btn" data-field="afternoonCount" data-delta="1" bindtap="onCountStep">+</view>
+      </view>
+      <picker mode="time" value="{{afternoonStart}}" data-field="afternoonStart" bindchange="onSessionStartChange">
+        <view class="session-start">{{afternoonStart}} 开始</view>
+      </picker>
+    </view>
+
+    <view class="session-row">
+      <text class="session-name">晚上</text>
+      <view class="stepper">
+        <view class="step-btn" data-field="eveningCount" data-delta="-1" bindtap="onCountStep">−</view>
+        <text class="step-val">{{eveningCount}}</text>
+        <view class="step-btn" data-field="eveningCount" data-delta="1" bindtap="onCountStep">+</view>
+      </view>
+      <picker mode="time" value="{{eveningStart}}" data-field="eveningStart" bindchange="onSessionStartChange">
+        <view class="session-start">{{eveningStart}} 开始</view>
+      </picker>
+    </view>
+
+    <view class="session-row">
+      <text class="session-name">课间休息</text>
+      <input
+        class="break-input"
+        type="number"
+        value="{{breakMinStr}}"
+        bindinput="onBreakInput"
+        maxlength="3"
+      />
+      <text class="unit">分钟</text>
+    </view>
+
+    <view class="regen-btn" bindtap="onTapRegen">按节数生成课表时间（共 {{totalCount}} 节）</view>
+  </view>
+
+  <!-- 2. 各节时间 -->
+  <view class="card">
+    <view class="card-head">
+      <text class="card-title">② 课表时间（每节时长）</text>
+    </view>
+    <view wx:if="{{!periods.length}}" class="empty-tip">先在上方设置节数并生成</view>
+    <view class="period-item" wx:for="{{periods}}" wx:key="key">
+      <view class="period-meta">
+        <text class="period-label">{{item.label}}</text>
+        <text class="period-session">{{item.sessionName}}</text>
+      </view>
+      <view class="period-fields">
+        <view class="field-inline">
+          <text class="field-label">开始</text>
+          <picker
+            mode="time"
+            value="{{item.start}}"
+            data-index="{{index}}"
+            bindchange="onPeriodStartChange"
+          >
+            <view class="field-input">{{item.start}}</view>
+          </picker>
+        </view>
+        <view class="field-inline">
+          <text class="field-label">时长</text>
+          <picker
+            mode="selector"
+            range="{{durationLabels}}"
+            value="{{item.durationIndex}}"
+            data-index="{{index}}"
+            bindchange="onPeriodDurationChange"
+          >
+            <view class="field-input">{{item.durationLabel}}</view>
+          </picker>
+        </view>
+        <view class="period-end">下课 {{item.endLabel}}</view>
+      </view>
+    </view>
+    <view class="hint-line" wx:if="{{periods.length}}">色块上下边界 = 本节开始 / 下课时间</view>
+  </view>
+
+  <!-- 3. 教学周 -->
+  <view class="card">
+    <view class="card-title">③ 教学周</view>
+    <view class="row">
+      <text class="label">开学日（第 1 周）</text>
+      <picker mode="date" value="{{semesterStartDisplay}}" bindchange="onSemesterStartChange">
+        <view class="value link">{{semesterStartDisplay}}</view>
+      </picker>
+    </view>
+    <view class="row">
+      <text class="label">总周数</text>
+      <input
+        class="value-input"
+        type="number"
+        value="{{totalWeeksStr}}"
+        bindinput="onTotalWeeksInput"
+        maxlength="2"
+      />
+      <text class="unit">周</text>
+    </view>
+    <view class="row muted">
+      <text class="label">按当前开学日</text>
+      <text class="value">现在约第 {{currentWeek}} 周</text>
+    </view>
+  </view>
+
+  <!-- 4. 日历可视时间 -->
+  <view class="card">
+    <view class="card-title">④ 日历可视时间</view>
+    <view class="hint-line">留空则按时段自动推算</view>
+    <view class="row">
+      <text class="label">开始</text>
+      <picker mode="time" value="{{dayStart}}" bindchange="onDayStartChange">
+        <view class="value link">{{dayStart || '自动'}}</view>
+      </picker>
+    </view>
+    <view class="row">
+      <text class="label">结束</text>
+      <picker mode="time" value="{{dayEnd}}" bindchange="onDayEndChange">
+        <view class="value link">{{dayEnd || '自动'}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="actions">
+    <view class="btn-primary" bindtap="onSave">保存设置</view>
+    <view class="btn-ghost" bindtap="restoreDefault">恢复默认作息</view>
+  </view>
+</view>

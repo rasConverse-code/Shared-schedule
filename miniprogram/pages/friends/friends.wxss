@@ -1,0 +1,267 @@
+.page {
+  min-height: 100vh;
+  background: #f4f6fa;
+  padding: 24rpx 28rpx 60rpx;
+}
+
+.hero {
+  background: linear-gradient(145deg, #4f6ef7 0%, #6d8cff 55%, #8b9dff 100%);
+  border-radius: 28rpx;
+  padding: 40rpx 36rpx 36rpx;
+  color: #fff;
+}
+
+.hero-title {
+  font-size: 40rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+
+.hero-desc {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 32rpx;
+}
+
+.hero-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 16rpx;
+}
+
+.hero .btn-primary {
+  background: #fff;
+  color: #4f6ef7;
+}
+
+.hero .btn-ghost {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.section {
+  margin-top: 36rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1c1f26;
+  margin-bottom: 16rpx;
+  padding-left: 4rpx;
+}
+
+.group-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-bottom: 16rpx;
+  border: 1rpx solid #e8ecf4;
+}
+
+.group-card.current {
+  border-color: #4f6ef7;
+  box-shadow: 0 8rpx 28rpx rgba(79, 110, 247, 0.12);
+}
+
+.group-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.group-name-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.group-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1c1f26;
+}
+
+.current-tag {
+  font-size: 20rpx;
+  color: #4f6ef7;
+  background: #eef1fe;
+  padding: 4rpx 10rpx;
+  border-radius: 8rpx;
+}
+
+.group-meta {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #8b93a7;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  flex-wrap: wrap;
+}
+
+.group-meta .code {
+  color: #5c6478;
+}
+
+.group-meta .dot {
+  color: #c5ccdb;
+}
+
+.switch-btn {
+  flex-shrink: 0;
+  min-width: 96rpx;
+  height: 64rpx;
+  padding: 0 20rpx;
+  border-radius: 14rpx;
+  background: #eef1fe;
+  color: #4f6ef7;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.switch-btn.on {
+  background: #4f6ef7;
+  color: #fff;
+}
+
+.share-card {
+  margin-top: 12rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 28rpx;
+  border: 1rpx solid #e8ecf4;
+}
+
+.share-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1c1f26;
+}
+
+.share-desc {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #8b93a7;
+  line-height: 1.5;
+}
+
+.share-btn {
+  margin-top: 24rpx;
+  height: 80rpx;
+  border-radius: 16rpx;
+  background: #4f6ef7;
+  color: #fff;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.cloud-tip {
+  margin-top: 28rpx;
+  font-size: 22rpx;
+  color: #a8b0c0;
+  line-height: 1.6;
+  padding: 0 8rpx;
+}
+
+/* Modal */
+.mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 31, 38, 0.4);
+  z-index: 40;
+}
+
+.modal {
+  position: fixed;
+  left: 40rpx;
+  right: 40rpx;
+  top: 50%;
+  transform: translateY(-50%) scale(0.96);
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 36rpx 32rpx 28rpx;
+  z-index: 41;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) scale(1);
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1c1f26;
+  text-align: center;
+}
+
+.modal-input {
+  margin-top: 28rpx;
+  height: 88rpx;
+  background: #f4f6fa;
+  border-radius: 14rpx;
+  padding: 0 24rpx;
+  font-size: 30rpx;
+  color: #1c1f26;
+}
+
+.modal-hint {
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  color: #a8b0c0;
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 32rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 14rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.modal-btn.ghost {
+  background: #f4f6fa;
+  color: #5c6478;
+}
+
+.modal-btn.primary {
+  background: #4f6ef7;
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal {
+    transition: none;
+  }
+}

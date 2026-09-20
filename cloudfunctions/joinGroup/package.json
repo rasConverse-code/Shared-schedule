@@ -1,0 +1,9 @@
+{
+  "name": "joinGroup",
+  "version": "1.0.0",
+  "description": "join group by invite code",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

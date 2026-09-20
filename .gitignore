@@ -1,0 +1,20 @@
+# 依赖
+node_modules/
+miniprogram_npm/
+
+# 云函数本地依赖
+cloudfunctions/**/node_modules/
+cloudfunctions/**/package-lock.json
+
+# 本地私有配置（含本机调试项，勿上传）
+project.private.config.json
+
+# 系统 / 编辑器
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+
+# 本地检查脚本输出
+scripts/*.tmp

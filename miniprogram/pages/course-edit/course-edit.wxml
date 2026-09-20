@@ -1,0 +1,126 @@
+<view class="page safe-bottom">
+  <view class="form">
+    <view class="field">
+      <view class="label">类型</view>
+      <picker mode="selector" range="{{typeOptions}}" value="{{typeIndex}}" bindchange="onTypeChange">
+        <view class="picker-value">{{typeOptions[typeIndex]}}</view>
+      </picker>
+      <view class="hint">{{typeIndex === 0 ? '按周重复的课程，可设生效周' : '一次性事件 / 临时占用'}}</view>
+    </view>
+
+    <view class="field">
+      <view class="label">名称</view>
+      <input
+        class="input"
+        placeholder="{{typeIndex === 0 ? '例如：高等数学' : '例如：约饭 / 兼职'}}"
+        value="{{title}}"
+        data-field="title"
+        bindinput="onInput"
+        maxlength="30"
+      />
+    </view>
+
+    <view class="field">
+      <view class="label">星期</view>
+      <picker mode="selector" range="{{dayLabels}}" value="{{dayIndex}}" bindchange="onDayChange">
+        <view class="picker-value">周{{dayLabels[dayIndex]}}</view>
+      </picker>
+    </view>
+
+    <view class="field-row">
+      <view class="field half">
+        <view class="label">开始节次</view>
+        <picker mode="selector" range="{{slotLabels}}" value="{{startSlotIndex}}" bindchange="onStartSlotChange">
+          <view class="picker-value">{{slots[startSlotIndex].label}} · {{slots[startSlotIndex].start}}</view>
+        </picker>
+      </view>
+      <view class="field half">
+        <view class="label">结束节次</view>
+        <picker mode="selector" range="{{slotLabels}}" value="{{endSlotIndex}}" bindchange="onEndSlotChange">
+          <view class="picker-value">{{slots[endSlotIndex].label}} · {{slots[endSlotIndex].end}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 教学周 -->
+    <view class="field" wx:if="{{typeIndex === 0}}">
+      <view class="week-head">
+        <view class="label">教学周（共 {{totalWeeks}} 周）</view>
+        <view class="week-summary">{{weeksSummary}}</view>
+      </view>
+      <view class="week-actions">
+        <view class="week-action" bindtap="selectAllWeeks">全选</view>
+        <view class="week-action" bindtap="selectOddWeeks">单周</view>
+        <view class="week-action" bindtap="selectEvenWeeks">双周</view>
+        <view class="week-action" bindtap="clearWeeks">清空</view>
+      </view>
+      <view class="week-grid">
+        <view
+          class="week-chip {{item.on ? 'on' : ''}}"
+          wx:for="{{weekChips}}"
+          wx:key="n"
+          data-n="{{item.n}}"
+          bindtap="toggleWeek"
+        >
+          {{item.n}}
+        </view>
+      </view>
+      <view class="hint">点选课程生效周；清空后视为每周</view>
+    </view>
+
+    <view class="field" wx:if="{{typeIndex === 0}}">
+      <view class="label">地点</view>
+      <input
+        class="input"
+        placeholder="教室 / 教学楼"
+        value="{{location}}"
+        data-field="location"
+        bindinput="onInput"
+        maxlength="40"
+      />
+    </view>
+
+    <view class="field" wx:if="{{typeIndex === 0}}">
+      <view class="label">老师（可选）</view>
+      <input
+        class="input"
+        placeholder="授课老师"
+        value="{{teacher}}"
+        data-field="teacher"
+        bindinput="onInput"
+        maxlength="20"
+      />
+    </view>
+
+    <view class="field" wx:if="{{typeIndex === 1}}">
+      <view class="label">地点</view>
+      <input
+        class="input"
+        placeholder="哪里见"
+        value="{{location}}"
+        data-field="location"
+        bindinput="onInput"
+        maxlength="40"
+      />
+    </view>
+
+    <view class="field">
+      <view class="label">备注（可选）</view>
+      <textarea
+        class="textarea"
+        placeholder="提醒自己或群友"
+        value="{{note}}"
+        data-field="note"
+        bindinput="onInput"
+        maxlength="100"
+      />
+    </view>
+  </view>
+
+  <view class="actions">
+    <view class="btn-primary {{saving ? 'disabled' : ''}}" bindtap="onSave">
+      {{isEdit ? '保存修改' : '添加到课表'}}
+    </view>
+    <view wx:if="{{isEdit}}" class="btn-danger" bindtap="onDelete">删除</view>
+  </view>
+</view>

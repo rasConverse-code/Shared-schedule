@@ -1,0 +1,29 @@
+<view class="page safe-bottom" wx:if="{{group}}">
+  <view class="card head-card">
+    <view class="g-name">{{group.name}}</view>
+    <view class="g-meta">{{members.length}} 位成员 · 我已录入 {{myCourseCount}} 条</view>
+    <view class="code-box" bindtap="copyCode">
+      <text class="code-label">邀请码</text>
+      <text class="code-value">{{group.inviteCode}}</text>
+      <text class="code-copy">复制</text>
+    </view>
+    <button class="btn-primary share" open-type="share">分享给好友加入</button>
+  </view>
+
+  <view class="card">
+    <view class="card-title">成员</view>
+    <view class="member-row" wx:for="{{members}}" wx:key="userId">
+      <view class="avatar" style="background:{{item.color}}">{{item.initial}}</view>
+      <view class="m-name">
+        {{item.nickName}}
+        <text wx:if="{{item.isMe}}" class="me">我</text>
+      </view>
+      <view class="m-dot" style="background:{{item.color}}"></view>
+    </view>
+  </view>
+
+  <view class="actions">
+    <view class="btn-ghost" bindtap="goSchedule">查看叠层课表</view>
+    <view class="btn-danger" bindtap="leaveGroup">退出群组</view>
+  </view>
+</view>

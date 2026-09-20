@@ -1,0 +1,65 @@
+<view class="page safe-bottom">
+  <view class="profile-card">
+    <view class="avatar" style="background:{{color}}">{{user.initial}}</view>
+    <view class="p-info">
+      <input
+        class="nick-input"
+        value="{{user.nickName}}"
+        bindinput="onNickInput"
+        bindblur="saveNick"
+        maxlength="12"
+        placeholder="你的昵称"
+      />
+      <view class="p-sub">群友在课表上看到的名字</view>
+    </view>
+  </view>
+
+  <view class="list-card">
+    <view class="list-head">
+      <text class="list-title">我的条目</text>
+      <text class="list-count">{{courses.length}}</text>
+      <view class="add-link" bindtap="goEdit">+ 添加</view>
+    </view>
+    <view wx:if="{{!courses.length}}" class="empty-tip">还没有条目，添加课程或临时事件</view>
+    <view
+      class="course-row"
+      wx:for="{{courses}}"
+      wx:key="_id"
+      data-id="{{item._id}}"
+      bindtap="goEdit"
+    >
+      <view class="c-left" style="border-left-color:{{color}}">
+        <view class="c-title">{{item.title}}</view>
+        <view class="c-meta">
+          {{item.dayLabel}} · {{item.rangeLabel}}
+          <text wx:if="{{item.weeksLabel}}"> · {{item.weeksLabel}}</text>
+          <text wx:if="{{item.location}}"> · {{item.location}}</text>
+        </view>
+      </view>
+      <view class="type-tag {{item.type}}">{{item.typeLabel}}</view>
+    </view>
+  </view>
+
+  <view class="list-card nav-card" bindtap="goSettings">
+    <view class="nav-row">
+      <view>
+        <view class="list-title">作息与教学周</view>
+        <view class="nav-sub">{{settingsBrief || '自定义时段与周数'}}</view>
+      </view>
+      <view class="nav-arrow">›</view>
+    </view>
+  </view>
+
+  <view class="list-card">
+    <view class="list-title sm">环境</view>
+    <view class="env-row">
+      <text class="env-label">数据模式</text>
+      <text class="env-value">{{cloudReady ? '微信云开发' : '本地演示'}}</text>
+    </view>
+    <view class="env-row">
+      <text class="env-label">说明</text>
+      <text class="env-value dim">{{cloudReady ? '与群友实时共享' : '仅本机可见，可完整体验交互'}}</text>
+    </view>
+    <view class="reset-btn" bindtap="resetDemo">重置演示数据</view>
+  </view>
+</view>
