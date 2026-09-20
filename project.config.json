@@ -4,7 +4,7 @@
   "cloudfunctionRoot": "cloudfunctions/",
   "appid": "wx812108e3ffa8ddb0",
   "projectname": "ketabazi",
-  "description": "多人共享课表，群友叠层查看谁被占用",
+  "description": "课表搭子：多人共享微信课表，iOS 式时间轴叠层查看谁被占用、谁有空，支持自定义作息节数与教学周，可接微信云开发与群友同步",
   "setting": {
     "es6": true,
     "enhance": true,
